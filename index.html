@@ -125,7 +125,7 @@
     /* Animated Bob Face */
     .bob-container {
       margin-top: 16px;
-      margin-bottom: 8px;
+      margin-bottom: 0;
       animation: bob-float 3s ease-in-out infinite;
     }
 
@@ -137,7 +137,6 @@
     .bob-face {
       position: relative;
       width: 200px;
-      height: 200px;
       margin: 0 auto;
     }
 
@@ -147,7 +146,7 @@
       font-weight: 600;
       letter-spacing: 1px;
       text-transform: uppercase;
-      margin-top: 4px;
+      margin-top: 0;
       height: 20px;
       transition: color 0.4s;
       color: var(--red);
@@ -271,9 +270,9 @@
       box-shadow: 0 0 8px rgba(240, 112, 176, 0.5);
     }
 
-    /* Blink */
+    /* Blink — scaleY keeps layout stable */
     .bob-eye.blink {
-      height: 6px !important;
+      transform: scaleY(0.15);
     }
     .bob-eye.blink .bob-pupil {
       opacity: 0;
