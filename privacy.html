@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy — ClawChat</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #0a0a14;
+      color: #ccc;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+      line-height: 1.8;
+      padding: 60px 24px;
+    }
+    .container {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    a { color: #00cccc; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    h1 {
+      color: #fff;
+      font-size: 36px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    .updated {
+      color: #555;
+      font-size: 14px;
+      margin-bottom: 40px;
+    }
+    h2 {
+      color: #fff;
+      font-size: 20px;
+      font-weight: 700;
+      margin-top: 36px;
+      margin-bottom: 12px;
+    }
+    p { margin-bottom: 16px; }
+    ul {
+      margin-bottom: 16px;
+      padding-left: 24px;
+    }
+    li { margin-bottom: 8px; }
+    .back {
+      display: inline-block;
+      margin-bottom: 32px;
+      color: #ff4444;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="/" class="back">← Back to ClawChat</a>
+
+    <h1>Privacy Policy</h1>
+    <p class="updated">Last updated: February 2026</p>
+
+    <h2>Your Privacy Matters</h2>
+    <p>ClawChat is designed with privacy at its core. We believe your conversations should remain yours — and we built the architecture to make sure they do.</p>
+
+    <h2>What We Don't Collect</h2>
+    <ul>
+      <li>We do <strong>NOT</strong> store your conversations on our servers</li>
+      <li>We do <strong>NOT</strong> read, log, or analyze your messages</li>
+      <li>We do <strong>NOT</strong> sell or share your personal data</li>
+      <li>We do <strong>NOT</strong> track your location</li>
+      <li>We do <strong>NOT</strong> require an account, email, or phone number</li>
+    </ul>
+
+    <h2>What We Do Collect</h2>
+    <ul>
+      <li><strong>Device ID:</strong> A random, anonymous identifier stored in your device's Keychain. We use this solely to manage your subscription status and daily usage limits. We cannot identify you personally from this ID.</li>
+      <li><strong>Usage counts:</strong> We track how many messages you send per day for rate limiting purposes only. This counter resets at midnight in your local timezone.</li>
+      <li><strong>Subscription status:</strong> Whether you are on the Free or PRO tier.</li>
+    </ul>
+
+    <h2>Your Data Storage</h2>
+    <p>All your conversations, memories, and chat history are stored <strong>locally on your device</strong> in a SQLite database and JSON files. This data never leaves your phone except in two cases:</p>
+    <ul>
+      <li><strong>iCloud Sync:</strong> If enabled, your data syncs through your personal iCloud account. We have no access to your iCloud data — Apple encrypts it end-to-end.</li>
+      <li><strong>Message Processing:</strong> When you send a message, it is transmitted to our server via HTTPS, forwarded to the AI model for processing, and the response is returned to your device. Messages are processed in memory only — they are never written to disk, logged, or stored on our server. No human at ClawChat ever sees your messages.</li>
+    </ul>
+
+    <h2>AI Processing</h2>
+    <p>Your messages are processed by Claude, Anthropic's AI model. Anthropic's <a href="https://www.anthropic.com/privacy" target="_blank">privacy policy</a> applies to this processing. According to Anthropic's policy, API inputs and outputs are not used to train their models.</p>
+
+    <h2>Open Source Server</h2>
+    <p>Our server code is publicly available on <a href="https://github.com/wearebob1000-dev/clawchat-api" target="_blank">GitHub</a>. Anyone can audit the code and verify that we do not store, log, or access your message content.</p>
+
+    <h2>Third-Party Services</h2>
+    <ul>
+      <li><strong>Anthropic (Claude AI):</strong> Processes your messages to generate responses</li>
+      <li><strong>Apple:</strong> Handles payments via App Store and iCloud sync</li>
+      <li><strong>Brave Search:</strong> Processes web search queries when you ask Bob to search the web</li>
+      <li><strong>Microsoft Edge TTS:</strong> Generates text-to-speech audio for Bob's voice responses</li>
+    </ul>
+
+    <h2>Data Deletion</h2>
+    <p>Delete the app and your data is gone. Completely. There are no server-side copies to worry about, no 90-day retention windows, and no "we'll get around to it" delays. Your iCloud data can be managed through iOS Settings. Contact <a href="mailto:support@clawchat.me">support@clawchat.me</a> to request deletion of your anonymous device ID from our rate-limiting database.</p>
+
+    <h2>Children's Privacy</h2>
+    <p>ClawChat is not intended for children under 13. We do not knowingly collect data from children.</p>
+
+    <h2>Changes to This Policy</h2>
+    <p>We may update this policy from time to time. Changes will be posted on this page with an updated date. Continued use of ClawChat after changes constitutes acceptance of the new policy.</p>
+
+    <h2>Contact Us</h2>
+    <p>Questions about privacy? Email us at <a href="mailto:support@clawchat.me">support@clawchat.me</a></p>
+
+    <p style="margin-top: 48px; color: #333; font-size: 13px;">© 2026 ClawChat · Powered by <a href="https://openclaw.ai" style="color: #444;">OpenClaw</a> · Co-built by Bob 🦞</p>
+  </div>
+</body>
+</html>
