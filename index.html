@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ClawChat — The AI That Gets to Know You</title>
-  <meta name="description" content="ClawChat is a private AI companion with persistent memory. Your conversations stay on your device. No accounts. No tracking. Just talk.">
+  <meta name="description" content="ClawChat is a private AI companion with persistent memory. Your conversations stay on your device. No accounts. No tracking. Just chat.">
   <meta property="og:title" content="ClawChat — The AI That Gets to Know You">
   <meta property="og:description" content="Private AI companion with persistent memory. Your data stays on your device.">
   <meta property="og:type" content="website">
@@ -87,13 +87,13 @@
 
     /* Hero */
     .hero {
-      min-height: 100vh;
+      min-height: auto;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       text-align: center;
-      padding: 120px 24px 80px;
+      padding: 120px 24px 40px;
       position: relative;
       overflow: hidden;
     }
@@ -124,13 +124,14 @@
 
     /* Animated Bob Face */
     .bob-container {
-      margin-bottom: 16px;
+      margin-top: 16px;
+      margin-bottom: 8px;
       animation: bob-float 3s ease-in-out infinite;
     }
 
     @keyframes bob-float {
       0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
+      50% { transform: translateY(-8px); }
     }
 
     .bob-face {
@@ -146,7 +147,7 @@
       font-weight: 600;
       letter-spacing: 1px;
       text-transform: uppercase;
-      margin-top: 8px;
+      margin-top: 4px;
       height: 20px;
       transition: color 0.4s;
       color: var(--red);
@@ -746,8 +747,8 @@
   <!-- Hero -->
   <section class="hero">
     <h1>The AI That <span class="highlight">Gets to Know You</span></h1>
-    <p class="subtitle">Meet Bob — a private AI companion with real memory. Your conversations stay on your device. No accounts. No tracking. Just talk.</p>
-    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 8px;">Powered by <a href="https://openclaw.ai" style="color: var(--cyan); text-decoration: none; font-weight: 600;">OpenClaw</a> · Co-built by Bob 🦞</p>
+    <p class="subtitle">Meet Bob — a private AI companion with real memory. Your conversations stay on your device. No accounts. No tracking. Just chat.</p>
+    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">Powered by <a href="https://openclaw.ai" style="color: var(--cyan); text-decoration: none; font-weight: 600;">OpenClaw</a> · Co-built by Bob 🦞</p>
 
     <!-- Animated Bob -->
     <div class="bob-container">
@@ -959,7 +960,7 @@
           <li>Returns the response</li>
           <li>Generates voice audio</li>
           <li>Checks daily usage limit</li>
-          <li><strong>Stores nothing. Logs nothing.</strong></li>
+          <li><strong>Stores nothing. Logs nothing. Conversations never visible.</strong></li>
         </ul>
       </div>
 
