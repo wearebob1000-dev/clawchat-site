@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ClawChat — The AI That Gets to Know You</title>
+  <meta name="description" content="ClawChat is a private AI companion with persistent memory. Your conversations stay on your device. No accounts. No tracking. Just talk.">
+  <meta property="og:title" content="ClawChat — The AI That Gets to Know You">
+  <meta property="og:description" content="Private AI companion with persistent memory. Your data stays on your device.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://clawchat.me">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦞</text></svg>">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0a0a14;
+      --bg-card: #12121e;
+      --border: #1e1e30;
+      --red: #ff4444;
+      --red-glow: rgba(255, 68, 68, 0.15);
+      --cyan: #00cccc;
+      --text: #ffffff;
+      --text-dim: #888888;
+      --text-muted: #555555;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Nav */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      padding: 16px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      background: rgba(10, 10, 20, 0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--red);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    .nav-cta {
+      background: var(--red) !important;
+      color: white !important;
+      padding: 8px 20px;
+      border-radius: 8px;
+      font-weight: 600 !important;
+      transition: opacity 0.2s;
+    }
+
+    .nav-cta:hover { opacity: 0.9; }
+
+    /* Hero */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 120px 24px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, var(--red-glow) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-lobster {
+      font-size: 80px;
+      margin-bottom: 24px;
+      animation: float 3s ease-in-out infinite;
+      display: none; /* replaced by animated Bob */
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+
+    /* Animated Bob Face */
+    .bob-container {
+      margin-bottom: 16px;
+      animation: bob-float 3s ease-in-out infinite;
+    }
+
+    @keyframes bob-float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .bob-face {
+      position: relative;
+      width: 200px;
+      height: 200px;
+      margin: 0 auto;
+    }
+
+    .bob-state-label {
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-top: 8px;
+      height: 20px;
+      transition: color 0.4s;
+      color: var(--red);
+    }
+
+    /* Eyes container */
+    .bob-eyes {
+      display: flex;
+      justify-content: center;
+      gap: 36px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Individual eye + stalk */
+    .bob-eye-unit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: transform 0.4s;
+    }
+
+    .bob-eye-unit.left { transform: rotate(-8deg); }
+    .bob-eye-unit.right { transform: rotate(8deg); }
+
+    .bob-eye {
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      background: var(--red);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.4s, width 0.3s, height 0.3s, box-shadow 0.4s;
+      box-shadow: 0 0 12px rgba(255, 68, 68, 0.5), 0 0 20px rgba(255, 68, 68, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bob-pupil {
+      width: 13px;
+      height: 13px;
+      border-radius: 3px;
+      background: #0a0a1a;
+      transition: transform 0.2s, width 0.3s, height 0.3s;
+    }
+
+    .bob-stalk {
+      width: 4px;
+      height: 20px;
+      border-radius: 2px;
+      transition: background 0.4s;
+      background: linear-gradient(to bottom, var(--red), rgba(255, 68, 68, 0.5));
+    }
+
+    /* Body */
+    .bob-body {
+      width: 110px;
+      height: 55px;
+      border-radius: 16px;
+      background: linear-gradient(to bottom, #1a1e3a, #0e1024);
+      border: 3px solid rgba(255, 68, 68, 0.7);
+      box-shadow: 0 0 15px rgba(255, 68, 68, 0.4), 0 0 25px rgba(255, 68, 68, 0.2);
+      margin: -2px auto 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+      transition: border-color 0.4s, box-shadow 0.4s;
+    }
+
+    /* Mouths */
+    .bob-mouth {
+      transition: all 0.3s;
+    }
+
+    .mouth-idle {
+      width: 40px;
+      height: 9px;
+      border-radius: 3px;
+      background: #f07070;
+      box-shadow: 0 0 8px rgba(255, 100, 100, 0.5);
+    }
+
+    .mouth-listening {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #5ba3f5;
+      box-shadow: 0 0 8px rgba(91, 163, 245, 0.5);
+    }
+
+    .mouth-thinking {
+      width: 26px;
+      height: 7px;
+      border-radius: 3px;
+      background: #f0c040;
+      box-shadow: 0 0 8px rgba(240, 192, 64, 0.5);
+    }
+
+    .mouth-talking {
+      width: 40px;
+      height: 16px;
+      border-radius: 8px;
+      background: #40d090;
+      box-shadow: 0 0 8px rgba(64, 208, 144, 0.5);
+      animation: talk 0.3s ease-in-out infinite alternate;
+    }
+
+    @keyframes talk {
+      0% { height: 8px; width: 32px; }
+      100% { height: 18px; width: 42px; }
+    }
+
+    .mouth-excited {
+      width: 40px;
+      height: 14px;
+      border-radius: 0 0 14px 14px;
+      background: #f070b0;
+      box-shadow: 0 0 8px rgba(240, 112, 176, 0.5);
+    }
+
+    /* Blink */
+    .bob-eye.blink {
+      height: 6px !important;
+    }
+    .bob-eye.blink .bob-pupil {
+      opacity: 0;
+    }
+
+    .hero h1 {
+      font-size: clamp(40px, 6vw, 72px);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 20px;
+      max-width: 700px;
+    }
+
+    .hero h1 .highlight {
+      background: linear-gradient(135deg, var(--red), #ff6666);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero .subtitle {
+      font-size: clamp(16px, 2.5vw, 20px);
+      color: var(--text-dim);
+      max-width: 520px;
+      margin-bottom: 40px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn-primary {
+      background: var(--red);
+      color: white;
+      padding: 14px 32px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 700;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px var(--red-glow);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text);
+      padding: 14px 32px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      transition: background 0.2s;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    /* Section base */
+    section {
+      padding: 100px 24px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--red);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 800;
+      margin-bottom: 16px;
+      line-height: 1.2;
+    }
+
+    .section-subtitle {
+      font-size: 18px;
+      color: var(--text-dim);
+      max-width: 600px;
+      margin-bottom: 50px;
+    }
+
+    /* Features */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      transition: border-color 0.3s, transform 0.2s;
+    }
+
+    .feature-card:hover {
+      border-color: var(--red);
+      transform: translateY(-4px);
+    }
+
+    .feature-icon {
+      font-size: 36px;
+      margin-bottom: 16px;
+    }
+
+    .feature-card h3 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .feature-card p {
+      color: var(--text-dim);
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    /* Privacy comparison */
+    .privacy-section {
+      text-align: center;
+    }
+
+    .privacy-section .section-subtitle {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .comp-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      border-radius: 16px;
+      overflow: hidden;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .comp-table th {
+      padding: 16px 12px;
+      font-size: 14px;
+      font-weight: 700;
+      background: #1a1a2e;
+      border-bottom: 2px solid #333;
+    }
+
+    .comp-table th:first-child {
+      text-align: left;
+      padding-left: 24px;
+    }
+
+    .comp-table th.hl {
+      color: var(--red);
+      background: linear-gradient(180deg, #1a0a0a, #1a1a2e);
+    }
+
+    .comp-table td {
+      padding: 14px 12px;
+      font-size: 14px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-dim);
+    }
+
+    .comp-table td:first-child {
+      text-align: left;
+      padding-left: 24px;
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .comp-table td.hl { background: rgba(255, 50, 50, 0.04); }
+    .comp-table tr:last-child td { border-bottom: none; }
+    .y { color: #44dd66; }
+    .n { color: #ff4444; }
+    .p { color: #ffaa33; font-size: 12px; }
+
+    /* How it works */
+    .how-grid {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr auto 1fr;
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    .how-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 22px;
+      text-align: center;
+    }
+
+    .how-card.yours { border-color: var(--cyan); }
+    .how-card.ours { border-color: #444; }
+
+    .how-card .icon { font-size: 36px; margin-bottom: 10px; }
+    .how-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 6px; }
+
+    .how-card .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 14px;
+    }
+
+    .how-card.yours .badge { background: rgba(0,204,204,0.15); color: var(--cyan); }
+    .how-card.ours .badge { background: rgba(150,150,150,0.15); color: #999; }
+
+    .how-card ul {
+      list-style: none;
+      text-align: left;
+      font-size: 13px;
+      color: var(--text-dim);
+    }
+
+    .how-card ul li { padding: 4px 0; }
+    .how-card ul li::before { content: '•'; margin-right: 8px; }
+    .how-card ul li strong { color: var(--text); }
+
+    .how-arrow {
+      display: flex;
+      align-items: center;
+      font-size: 24px;
+      color: #333;
+    }
+
+    /* Pricing */
+    .pricing-section { text-align: center; }
+
+    .pricing-section .section-subtitle {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .pricing-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 36px 28px;
+      text-align: center;
+      position: relative;
+    }
+
+    .pricing-card.featured {
+      border-color: var(--red);
+      box-shadow: 0 0 40px var(--red-glow);
+    }
+
+    .pricing-badge {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--red);
+      color: white;
+      padding: 4px 16px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .pricing-card h3 {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .pricing-price {
+      font-size: 42px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .pricing-price span {
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--text-dim);
+    }
+
+    .pricing-features {
+      list-style: none;
+      text-align: left;
+      margin: 24px 0;
+    }
+
+    .pricing-features li {
+      padding: 8px 0;
+      font-size: 15px;
+      color: var(--text-dim);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .pricing-features li::before {
+      content: '✓';
+      color: var(--red);
+      font-weight: 700;
+    }
+
+    .pricing-btn {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 700;
+      text-decoration: none;
+      text-align: center;
+      transition: transform 0.2s;
+    }
+
+    .pricing-btn:hover { transform: translateY(-2px); }
+
+    .pricing-btn.primary {
+      background: var(--red);
+      color: white;
+    }
+
+    .pricing-btn.secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    /* Open Source banner */
+    .open-source {
+      text-align: center;
+      padding: 80px 24px;
+      border-top: 1px solid var(--border);
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .open-source h2 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .open-source p {
+      color: var(--text-dim);
+      font-size: 16px;
+      margin-bottom: 24px;
+    }
+
+    .github-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text);
+      text-decoration: none;
+      padding: 12px 24px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-weight: 600;
+      transition: border-color 0.2s;
+    }
+
+    .github-link:hover { border-color: var(--text-dim); }
+
+    .github-link svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 24px;
+      text-align: center;
+    }
+
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-brand {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .footer-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 13px;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--text-dim); }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      nav { padding: 12px 20px; }
+      .nav-links { gap: 16px; }
+      .nav-links a:not(.nav-cta) { display: none; }
+
+      section { padding: 60px 20px; }
+
+      .features-grid { grid-template-columns: 1fr; }
+
+      .how-grid {
+        grid-template-columns: 1fr;
+      }
+      .how-arrow { justify-content: center; transform: rotate(90deg); }
+
+      .comp-table { font-size: 12px; }
+      .comp-table th, .comp-table td { padding: 10px 6px; }
+
+      .pricing-grid { grid-template-columns: 1fr; }
+
+      .footer-inner { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav>
+    <a href="#" class="nav-logo">🦞 ClawChat</a>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#privacy">Privacy</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#download" class="nav-cta">Download</a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <h1>The AI That <span class="highlight">Gets to Know You</span></h1>
+    <p class="subtitle">Meet Bob — a private AI companion with real memory. Your conversations stay on your device. No accounts. No tracking. Just talk.</p>
+    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 8px;">Powered by <a href="https://openclaw.ai" style="color: var(--cyan); text-decoration: none; font-weight: 600;">OpenClaw</a> · Co-built by Bob 🦞</p>
+
+    <!-- Animated Bob -->
+    <div class="bob-container">
+      <div class="bob-face" id="bobFace">
+        <div class="bob-eyes">
+          <div class="bob-eye-unit left">
+            <div class="bob-eye" id="eyeL">
+              <div class="bob-pupil" id="pupilL"></div>
+            </div>
+            <div class="bob-stalk" id="stalkL"></div>
+          </div>
+          <div class="bob-eye-unit right">
+            <div class="bob-eye" id="eyeR">
+              <div class="bob-pupil" id="pupilR"></div>
+            </div>
+            <div class="bob-stalk" id="stalkR"></div>
+          </div>
+        </div>
+        <div class="bob-body" id="bobBody">
+          <div class="bob-mouth mouth-idle" id="bobMouth"></div>
+        </div>
+      </div>
+      <div class="bob-state-label" id="bobLabel">Ready</div>
+    </div>
+
+    <div class="hero-buttons">
+      <a href="#download" class="btn-primary">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+        Download for iOS
+      </a>
+      <a href="#privacy" class="btn-secondary">See How We Protect You</a>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features">
+    <div class="section-label">Features</div>
+    <h2 class="section-title">More Than Just a Chatbot</h2>
+    <p class="section-subtitle">Bob is an AI companion that actually remembers you — and keeps your conversations private.</p>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🧠</div>
+        <h3>Persistent Memory</h3>
+        <p>Bob remembers your name, preferences, and conversations across sessions. The more you talk, the better he knows you — like a real friend.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🔒</div>
+        <h3>Privacy First</h3>
+        <p>Your conversations are stored only on your device. No accounts, no emails, no tracking. Our server code is open source for anyone to audit.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🎙️</div>
+        <h3>Voice Conversations</h3>
+        <p>Talk to Bob naturally. Built-in speech recognition and text-to-speech make it feel like a real conversation, not typing into a box.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🔍</div>
+        <h3>Web Search</h3>
+        <p>Bob can search the web for current information — news, weather, prices, anything. Get real answers, not outdated training data.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">☁️</div>
+        <h3>iCloud Sync</h3>
+        <p>Your memories sync across your Apple devices through your personal iCloud. We never touch this data — Apple encrypts it end-to-end.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🦞</div>
+        <h3>Personality</h3>
+        <p>Bob isn't a boring corporate assistant. He has opinions, expressions, and a lobster face that reacts to the conversation in real-time.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- AI Model -->
+  <section style="text-align: center;">
+    <div class="section-label">Intelligence</div>
+    <h2 class="section-title">Powered by Claude Sonnet 4</h2>
+    <p class="section-subtitle" style="margin-left: auto; margin-right: auto;">Not a dumbed-down chatbot. Bob runs on Anthropic's most capable production model — the same AI used by professionals worldwide.</p>
+
+    <div class="features-grid" style="max-width: 900px; margin: 0 auto;">
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>Advanced Reasoning</h3>
+        <p>Claude Sonnet 4 excels at complex tasks — analysis, coding, math, creative writing. Real intelligence, not canned responses.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">💬</div>
+        <h3>Natural Conversation</h3>
+        <p>Nuanced, context-aware dialogue that feels human. Understands subtext, humor, and follow-up questions naturally.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🛡️</div>
+        <h3>Safety Built In</h3>
+        <p>Anthropic leads the industry in AI safety. Claude is designed to be helpful, harmless, and honest — no jailbreaks, no harmful output.</p>
+      </div>
+    </div>
+
+    <p style="color: var(--text-muted); font-size: 14px; margin-top: 32px;">Most AI apps give you the cheapest model. ClawChat gives you the best.<br>
+    <a href="https://www.anthropic.com/claude" target="_blank" style="color: var(--cyan); text-decoration: none;">Learn more about Claude →</a></p>
+  </section>
+
+  <!-- Privacy -->
+  <section id="privacy" class="privacy-section">
+    <div class="section-label">Privacy</div>
+    <h2 class="section-title">Privacy That's Not Just a Promise</h2>
+    <p class="section-subtitle">We don't just say we protect your data — we built the architecture so we literally can't access it.</p>
+
+    <table class="comp-table">
+      <thead>
+        <tr>
+          <th></th>
+          <th class="hl">🦞 ClawChat</th>
+          <th>ChatGPT</th>
+          <th>Claude</th>
+          <th>Gemini</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Conversations on YOUR device</td>
+          <td class="hl"><span class="y">✓</span></td>
+          <td><span class="n">✗</span></td>
+          <td><span class="n">✗</span></td>
+          <td><span class="n">✗</span></td>
+        </tr>
+        <tr>
+          <td>No account or email required</td>
+          <td class="hl"><span class="y">✓</span></td>
+          <td><span class="n">✗</span></td>
+          <td><span class="n">✗</span></td>
+          <td><span class="n">✗</span></td>
+        </tr>
+        <tr>
+          <td>No chat history on company servers</td>
+          <td class="hl"><span class="y">✓</span></td>
+          <td><span class="n">✗</span></td>
+          <td><span class="n">✗</span></td>
+          <td><span class="n">✗</span></td>
+        </tr>
+        <tr>
+          <td>Server code is open source</td>
+          <td class="hl"><span class="y">✓</span></td>
+          <td><span class="n">✗</span></td>
+          <td><span class="n">✗</span></td>
+          <td><span class="n">✗</span></td>
+        </tr>
+        <tr>
+          <td>Persistent memory across sessions</td>
+          <td class="hl"><span class="y">✓</span></td>
+          <td><span class="p">Limited</span></td>
+          <td><span class="p">Limited</span></td>
+          <td><span class="n">✗</span></td>
+        </tr>
+        <tr>
+          <td>Memory stored only on your device</td>
+          <td class="hl"><span class="y">✓</span></td>
+          <td><span class="n">✗</span></td>
+          <td><span class="n">✗</span></td>
+          <td>N/A</td>
+        </tr>
+        <tr>
+          <td>Data gone when you delete the app</td>
+          <td class="hl"><span class="y">✓</span></td>
+          <td><span class="n">✗</span></td>
+          <td><span class="n">✗</span></td>
+          <td><span class="n">✗</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="color: var(--text-muted); font-size: 13px; margin-top: 16px;">Your messages are encrypted in transit and processed only in memory. They are never logged, never written to disk, and no human at ClawChat ever sees them.</p>
+  </section>
+
+  <!-- How It Works -->
+  <section>
+    <div class="section-label">Architecture</div>
+    <h2 class="section-title">Where Your Data Lives</h2>
+    <p class="section-subtitle">Your phone holds everything. Our server is just a stateless relay.</p>
+
+    <div class="how-grid">
+      <div class="how-card yours">
+        <div class="icon">📱</div>
+        <h3>Your iPhone</h3>
+        <div class="badge">Only you control this</div>
+        <ul>
+          <li>Full chat history (SQLite)</li>
+          <li>Bob's memories about you</li>
+          <li>Rolling conversation summaries</li>
+          <li>Backed up to YOUR iCloud</li>
+          <li><strong>Encrypted by iOS + iCloud</strong></li>
+        </ul>
+      </div>
+
+      <div class="how-arrow">→</div>
+
+      <div class="how-card ours">
+        <div class="icon">⚡</div>
+        <h3>Our Server</h3>
+        <div class="badge">Stateless proxy</div>
+        <ul>
+          <li>Forwards your message to AI</li>
+          <li>Returns the response</li>
+          <li>Generates voice audio</li>
+          <li>Checks daily usage limit</li>
+          <li><strong>Stores nothing. Logs nothing.</strong></li>
+        </ul>
+      </div>
+
+      <div class="how-arrow">→</div>
+
+      <div class="how-card yours">
+        <div class="icon">🔓</div>
+        <h3>Open Source</h3>
+        <div class="badge">Verify it yourself</div>
+        <ul>
+          <li>Server code on GitHub</li>
+          <li>No black boxes</li>
+          <li>No "trust us" required</li>
+          <li>Community auditable</li>
+          <li><strong>Transparency by default</strong></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section id="pricing" class="pricing-section">
+    <div class="section-label">Pricing</div>
+    <h2 class="section-title">Simple, Honest Pricing</h2>
+    <p class="section-subtitle">Start free. Upgrade when Bob becomes indispensable.</p>
+
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <h3>Free</h3>
+        <div class="pricing-price">$0</div>
+        <ul class="pricing-features">
+          <li>10 messages per day</li>
+          <li>Voice conversations</li>
+          <li>Web search</li>
+          <li>Animated Bob face</li>
+          <li>Local storage</li>
+        </ul>
+        <a href="#download" class="pricing-btn secondary">Get Started</a>
+      </div>
+
+      <div class="pricing-card featured">
+        <div class="pricing-badge">Most Popular</div>
+        <h3>PRO</h3>
+        <div class="pricing-price">$19.99<span>/mo</span></div>
+        <ul class="pricing-features">
+          <li>100 messages per day</li>
+          <li>Persistent memory</li>
+          <li>iCloud sync across devices</li>
+          <li>Bob remembers you forever</li>
+          <li>Everything in Free</li>
+        </ul>
+        <a href="#download" class="pricing-btn primary">Upgrade to PRO</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Open Source -->
+  <div class="open-source">
+    <h2>🔍 Don't Trust Us. Verify.</h2>
+    <p>Our server code is public. Read every line. We have nothing to hide because there's nothing to find.</p>
+    <a href="https://github.com/wearebob1000-dev/clawchat-api" class="github-link" target="_blank">
+      <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.38.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5 1 .1-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 016.02 0c2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.21.69.82.58C20.56 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>
+      View on GitHub
+    </a>
+  </div>
+
+  <!-- Download CTA -->
+  <section id="download" style="text-align: center; padding-bottom: 120px;">
+    <div class="hero-lobster" style="font-size: 60px;">🦞</div>
+    <h2 class="section-title">Ready to Meet Bob?</h2>
+    <p class="section-subtitle" style="margin: 0 auto 32px;">Download ClawChat and start talking. No sign-up required.</p>
+    <a href="#" class="btn-primary" style="font-size: 18px; padding: 16px 40px;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+      Download on the App Store
+    </a>
+    <p style="color: var(--text-muted); font-size: 13px; margin-top: 16px;">Requires iOS 16.0 or later</p>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">© 2026 ClawChat · Powered by <a href="https://openclaw.ai" style="color: var(--cyan); text-decoration: none;">OpenClaw</a> · Co-built by Bob 🦞</div>
+      <div class="footer-links">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+        <a href="mailto:support@clawchat.me">Contact</a>
+        <a href="https://github.com/wearebob1000-dev/clawchat-api" target="_blank">GitHub</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Bob emotion cycle
+    const states = [
+      {
+        name: 'Ready',
+        eyeColor: '#ff4444',
+        glowColor: 'rgba(255, 68, 68, 0.5)',
+        stalkColor: 'linear-gradient(to bottom, #ff4444, rgba(255, 68, 68, 0.5))',
+        borderColor: 'rgba(255, 68, 68, 0.7)',
+        mouthClass: 'mouth-idle',
+        labelColor: '#ff4444',
+        duration: 2500
+      },
+      {
+        name: 'Listening',
+        eyeColor: '#ff6633',
+        glowColor: 'rgba(255, 102, 51, 0.5)',
+        stalkColor: 'linear-gradient(to bottom, #ff6633, rgba(255, 102, 51, 0.5))',
+        borderColor: 'rgba(255, 102, 51, 0.7)',
+        mouthClass: 'mouth-listening',
+        labelColor: '#ff6633',
+        duration: 2500
+      },
+      {
+        name: 'Thinking',
+        eyeColor: '#f0d040',
+        glowColor: 'rgba(240, 208, 64, 0.5)',
+        stalkColor: 'linear-gradient(to bottom, #f0d040, rgba(240, 208, 64, 0.5))',
+        borderColor: 'rgba(240, 208, 64, 0.7)',
+        mouthClass: 'mouth-thinking',
+        labelColor: '#f0d040',
+        duration: 2500
+      },
+      {
+        name: 'Talking',
+        eyeColor: '#ff4444',
+        glowColor: 'rgba(255, 68, 68, 0.5)',
+        stalkColor: 'linear-gradient(to bottom, #ff4444, rgba(255, 68, 68, 0.5))',
+        borderColor: 'rgba(255, 68, 68, 0.7)',
+        mouthClass: 'mouth-talking',
+        labelColor: '#40d090',
+        duration: 3000
+      },
+      {
+        name: 'Excited!',
+        eyeColor: '#ff4080',
+        glowColor: 'rgba(255, 64, 128, 0.5)',
+        stalkColor: 'linear-gradient(to bottom, #ff4080, rgba(255, 64, 128, 0.5))',
+        borderColor: 'rgba(255, 64, 128, 0.7)',
+        mouthClass: 'mouth-excited',
+        labelColor: '#ff4080',
+        duration: 2500
+      }
+    ];
+
+    const eyeL = document.getElementById('eyeL');
+    const eyeR = document.getElementById('eyeR');
+    const stalkL = document.getElementById('stalkL');
+    const stalkR = document.getElementById('stalkR');
+    const bobBody = document.getElementById('bobBody');
+    const bobMouth = document.getElementById('bobMouth');
+    const bobLabel = document.getElementById('bobLabel');
+
+    let currentState = 0;
+
+    function applyState(state) {
+      // Eyes
+      eyeL.style.background = state.eyeColor;
+      eyeR.style.background = state.eyeColor;
+      eyeL.style.boxShadow = `0 0 12px ${state.glowColor}, 0 0 20px ${state.glowColor.replace('0.5', '0.3')}`;
+      eyeR.style.boxShadow = `0 0 12px ${state.glowColor}, 0 0 20px ${state.glowColor.replace('0.5', '0.3')}`;
+
+      // Stalks
+      stalkL.style.background = state.stalkColor;
+      stalkR.style.background = state.stalkColor;
+
+      // Body
+      bobBody.style.borderColor = state.borderColor;
+      bobBody.style.boxShadow = `0 0 15px ${state.glowColor.replace('0.5', '0.4')}, 0 0 25px ${state.glowColor.replace('0.5', '0.2')}`;
+
+      // Mouth
+      bobMouth.className = 'bob-mouth ' + state.mouthClass;
+
+      // Label
+      bobLabel.textContent = state.name;
+      bobLabel.style.color = state.labelColor;
+    }
+
+    function nextState() {
+      currentState = (currentState + 1) % states.length;
+      applyState(states[currentState]);
+      setTimeout(nextState, states[currentState].duration);
+    }
+
+    // Blink
+    function blink() {
+      eyeL.classList.add('blink');
+      eyeR.classList.add('blink');
+      setTimeout(() => {
+        eyeL.classList.remove('blink');
+        eyeR.classList.remove('blink');
+      }, 150);
+    }
+
+    setInterval(blink, 3000);
+
+    // Start cycling
+    applyState(states[0]);
+    setTimeout(nextState, states[0].duration);
+  </script>
+</body>
+</html>
