@@ -342,6 +342,105 @@
       background: rgba(255, 255, 255, 0.12);
     }
 
+    /* Screenshots */
+    .screenshots-section {
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .screenshots-scroll {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      padding: 0 24px 20px;
+      scrollbar-width: none;
+    }
+
+    .screenshots-scroll::-webkit-scrollbar { display: none; }
+
+    .screenshot-item {
+      flex: 0 0 auto;
+      scroll-snap-align: center;
+      position: relative;
+    }
+
+    .screenshot-item img {
+      height: 480px;
+      width: auto;
+      border-radius: 24px;
+      border: 2px solid var(--border);
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4);
+      transition: transform 0.3s, border-color 0.3s;
+    }
+
+    .screenshot-item img:hover {
+      transform: scale(1.03);
+      border-color: var(--red);
+    }
+
+    .screenshot-label {
+      margin-top: 12px;
+      font-size: 13px;
+      color: var(--text-dim);
+      font-weight: 500;
+    }
+
+    /* Videos */
+    .videos-section { text-align: center; }
+
+    .videos-section .section-subtitle {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .videos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .video-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: border-color 0.3s, transform 0.2s;
+    }
+
+    .video-card:hover {
+      border-color: var(--red);
+      transform: translateY(-4px);
+    }
+
+    .video-card iframe {
+      width: 100%;
+      height: 480px;
+      border: none;
+    }
+
+    .video-card .video-caption {
+      padding: 16px;
+      font-size: 14px;
+      color: var(--text-dim);
+      text-align: left;
+    }
+
+    .video-card .video-caption strong {
+      color: var(--text);
+    }
+
+    @media (max-width: 768px) {
+      .screenshot-item img { height: 360px; }
+      .videos-grid { grid-template-columns: 1fr; }
+      .video-card iframe { height: 580px; }
+    }
+
     /* Section base */
     section {
       padding: 100px 24px;
@@ -740,6 +839,7 @@
       <a href="#features">Features</a>
       <a href="#privacy">Privacy</a>
       <a href="#pricing">Pricing</a>
+      <a href="#videos">Videos</a>
       <a href="https://x.com/ClawChatApp" target="_blank">𝕏</a>
       <a href="https://www.tiktok.com/@clawchat_bob" target="_blank">TikTok</a>
       <a href="#download" class="nav-cta">Download</a>
@@ -782,6 +882,40 @@
         Download for iOS
       </a>
       <a href="#privacy" class="btn-secondary">See How We Protect You</a>
+    </div>
+  </section>
+
+  <!-- Screenshots -->
+  <section class="screenshots-section">
+    <div class="section-label">See It In Action</div>
+    <h2 class="section-title">Meet Bob on Your iPhone</h2>
+    <p class="section-subtitle" style="margin-left: auto; margin-right: auto;">Voice conversations, real-time expressions, and an AI that actually remembers you.</p>
+
+    <div class="screenshots-scroll">
+      <div class="screenshot-item">
+        <img src="screenshots/IMG_5087.png" alt="ClawChat idle state" loading="lazy">
+        <div class="screenshot-label">Ready to chat</div>
+      </div>
+      <div class="screenshot-item">
+        <img src="screenshots/IMG_5093.png" alt="ClawChat listening" loading="lazy">
+        <div class="screenshot-label">Listening to you</div>
+      </div>
+      <div class="screenshot-item">
+        <img src="screenshots/IMG_5094.png" alt="ClawChat thinking" loading="lazy">
+        <div class="screenshot-label">Thinking...</div>
+      </div>
+      <div class="screenshot-item">
+        <img src="screenshots/IMG_5097.png" alt="ClawChat speaking with answer" loading="lazy">
+        <div class="screenshot-label">Speaking the answer</div>
+      </div>
+      <div class="screenshot-item">
+        <img src="screenshots/IMG_5089.png" alt="ClawChat talking" loading="lazy">
+        <div class="screenshot-label">Voice response</div>
+      </div>
+      <div class="screenshot-item">
+        <img src="screenshots/IMG_5088.png" alt="ClawChat settings" loading="lazy">
+        <div class="screenshot-label">Clean interface</div>
+      </div>
     </div>
   </section>
 
@@ -1023,6 +1157,29 @@
         <a href="#download" class="pricing-btn primary">Upgrade to PRO</a>
       </div>
     </div>
+  </section>
+
+  <!-- Videos -->
+  <section id="videos" class="videos-section">
+    <div class="section-label">Watch Bob in Action</div>
+    <h2 class="section-title">Bob Has Opinions</h2>
+    <p class="section-subtitle">See what happens when you give a lobster a voice and zero filter.</p>
+
+    <div class="videos-grid">
+      <!-- TikTok embeds: replace VIDEOID with actual TikTok video IDs -->
+      <!-- To get embed: TikTok video → Share → Embed → copy the cite URL -->
+      <!--
+      <div class="video-card">
+        <iframe src="https://www.tiktok.com/embed/v2/VIDEOID" allowfullscreen></iframe>
+        <div class="video-caption"><strong>Bob Roasts ChatGPT</strong> — "You forget me every time I close the tab"</div>
+      </div>
+      -->
+    </div>
+
+    <p style="color: var(--text-dim); font-size: 14px; margin-top: 32px;">
+      Follow Bob on TikTok for more unhinged AI content →
+      <a href="https://www.tiktok.com/@clawchat_bob" target="_blank" style="color: var(--red); text-decoration: none; font-weight: 600;">@clawchat_bob</a>
+    </p>
   </section>
 
   <!-- Open Source -->
