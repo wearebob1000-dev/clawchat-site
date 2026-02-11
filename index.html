@@ -396,47 +396,42 @@
     }
 
     /* Videos */
-    .videos-section { text-align: center; }
+    .videos-section { text-align: center; overflow: hidden; }
 
     .videos-section .section-subtitle {
       margin-left: auto;
       margin-right: auto;
     }
 
-    .videos-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 24px;
-      max-width: 960px;
+    .videos-scroll {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      padding: 0 24px 20px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+      max-width: 1100px;
       margin: 0 auto;
     }
+
+    .videos-scroll::-webkit-scrollbar { height: 6px; }
+    .videos-scroll::-webkit-scrollbar-track { background: transparent; }
+    .videos-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 
     .video-card {
-      background: transparent;
-      border: none;
+      flex: 0 0 auto;
+      scroll-snap-align: center;
+      width: 280px;
+      height: 500px;
       border-radius: 16px;
       overflow: hidden;
-      transition: transform 0.2s;
-      /* 9:16 aspect ratio container */
-      position: relative;
-      width: 325px;
-      margin: 0 auto;
-    }
-
-    .video-card:hover {
-      transform: translateY(-4px);
-    }
-
-    .video-card .video-wrapper {
-      position: relative;
-      width: 100%;
-      padding-bottom: 177.78%; /* 16/9 = 1.7778 for 9:16 vertical */
     }
 
     .video-card iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
       width: 100%;
       height: 100%;
       border: none;
@@ -445,8 +440,7 @@
 
     @media (max-width: 768px) {
       .screenshot-item img { height: 360px; }
-      .videos-grid { grid-template-columns: 1fr; }
-      .video-card { width: 300px; }
+      .video-card { width: 260px; height: 460px; }
     }
 
     /* Section base */
@@ -1169,16 +1163,12 @@
     <h2 class="section-title">Bob Has Opinions</h2>
     <p class="section-subtitle">See what happens when you give a lobster a voice and zero filter.</p>
 
-    <div class="videos-grid">
+    <div class="videos-scroll">
       <div class="video-card">
-        <div class="video-wrapper">
-          <iframe src="https://www.tiktok.com/embed/v2/7605358671639481631" allowfullscreen allow="encrypted-media"></iframe>
-        </div>
+        <iframe src="https://www.tiktok.com/embed/v2/7605358671639481631" allowfullscreen allow="encrypted-media"></iframe>
       </div>
       <div class="video-card">
-        <div class="video-wrapper">
-          <iframe src="https://www.tiktok.com/embed/v2/7605605139331763487" allowfullscreen allow="encrypted-media"></iframe>
-        </div>
+        <iframe src="https://www.tiktok.com/embed/v2/7605605139331763487" allowfullscreen allow="encrypted-media"></iframe>
       </div>
     </div>
 
