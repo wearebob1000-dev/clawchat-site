@@ -405,13 +405,13 @@
 
     .videos-scroll {
       display: flex;
-      gap: 20px;
-      justify-content: center;
+      gap: 24px;
+      justify-content: flex-start;
       flex-wrap: nowrap;
       overflow-x: auto;
       scroll-snap-type: x mandatory;
       -webkit-overflow-scrolling: touch;
-      padding: 0 24px 20px;
+      padding: 0 40px 20px;
       scrollbar-width: thin;
       scrollbar-color: var(--border) transparent;
       max-width: 1100px;
@@ -425,22 +425,17 @@
     .video-card {
       flex: 0 0 auto;
       scroll-snap-align: center;
-      width: 280px;
-      height: 500px;
-      border-radius: 16px;
-      overflow: hidden;
     }
 
-    .video-card iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-      border-radius: 16px;
+    /* TikTok blockquote embeds auto-size; constrain max width */
+    .video-card blockquote {
+      max-width: 325px !important;
+      min-width: 280px !important;
     }
 
     @media (max-width: 768px) {
       .screenshot-item img { height: 360px; }
-      .video-card { width: 260px; height: 460px; }
+      .videos-scroll { padding: 0 20px 20px; }
     }
 
     /* Section base */
@@ -1165,10 +1160,14 @@
 
     <div class="videos-scroll">
       <div class="video-card">
-        <iframe src="https://www.tiktok.com/embed/v2/7605358671639481631" allowfullscreen allow="encrypted-media"></iframe>
+        <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@clawchat_bob/video/7605358671639481631" data-video-id="7605358671639481631" style="max-width:325px; min-width:280px;">
+          <section><a target="_blank" href="https://www.tiktok.com/@clawchat_bob/video/7605358671639481631">@clawchat_bob</a></section>
+        </blockquote>
       </div>
       <div class="video-card">
-        <iframe src="https://www.tiktok.com/embed/v2/7605605139331763487" allowfullscreen allow="encrypted-media"></iframe>
+        <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@clawchat_bob/video/7605605139331763487" data-video-id="7605605139331763487" style="max-width:325px; min-width:280px;">
+          <section><a target="_blank" href="https://www.tiktok.com/@clawchat_bob/video/7605605139331763487">@clawchat_bob</a></section>
+        </blockquote>
       </div>
     </div>
 
@@ -1216,6 +1215,7 @@
     </div>
   </footer>
 
+  <script async src="https://www.tiktok.com/embed.js"></script>
   <script>
     // Bob emotion cycle
     const states = [
