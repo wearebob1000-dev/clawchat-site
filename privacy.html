@@ -22,7 +22,7 @@
   <div class="container">
     <a href="/" class="back">← Back to ClawChat</a>
     <h1>Privacy Policy</h1>
-    <p class="updated">Last updated: February 5, 2026</p>
+    <p class="updated">Last updated: April 6, 2026</p>
 
     <h2>Overview</h2>
     <p>ClawChat AI ("ClawChat", "we", "our") is designed with privacy as a core principle. Your conversations and personal data stay on your device. We do not collect, store, or sell your personal information.</p>
@@ -36,8 +36,15 @@
     </ul>
     <p>This data is stored locally on your iPhone using SQLite and JSON files. If you enable iCloud sync (PRO), your data syncs privately through your personal iCloud account - we never see it.</p>
 
-    <h2>Data We Process</h2>
-    <p>When you send a message, it is transmitted to our server solely to generate a response from the AI model (Claude by Anthropic). We do not log or store the content of your messages. Our server processes your message in real time and discards it immediately after responding.</p>
+    <h2>Data Shared with Third Parties</h2>
+    <p>When you send a message, the following data is transmitted to our server and then forwarded to <strong>Anthropic (Claude AI)</strong> to generate a response:</p>
+    <ul>
+      <li>Your chat message text</li>
+      <li>Up to 10 recent messages from your conversation (for context)</li>
+      <li>Your device's anonymous identifier (for rate limiting only)</li>
+    </ul>
+    <p>We do not log or store the content of your messages on our server. Messages are processed in real time and discarded immediately after a response is generated. Anthropic processes your messages in accordance with their <a href="https://www.anthropic.com/privacy">privacy policy</a> and <a href="https://www.anthropic.com/policies/usage-policy">usage policy</a>.</p>
+    <p><strong>Your consent is required before any data is shared.</strong> The app presents a data consent screen on first launch that explains what data is sent, who receives it, and requires your explicit agreement before any messages are transmitted.</p>
 
     <h2>Data We Collect</h2>
     <ul>
