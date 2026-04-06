@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>17 N 5th Ave — Property Investment Report</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Georgia', serif; background: #f5f3ef; color: #2c2c2c; }
+
+  header {
+    background: #1a3a2a;
+    color: white;
+    padding: 40px 24px 32px;
+    border-bottom: 4px solid #c8a96e;
+  }
+  header .address { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: #c8a96e; margin-bottom: 8px; }
+  header h1 { font-size: 28px; font-weight: normal; line-height: 1.3; }
+  header .subtitle { margin-top: 8px; font-size: 13px; color: #aac7b5; font-style: italic; }
+  header .meta { margin-top: 20px; display: flex; gap: 20px; flex-wrap: wrap; }
+  header .meta-item { font-size: 11px; color: #c8a96e; }
+  header .meta-item span { display: block; color: white; font-size: 14px; font-weight: bold; margin-top: 2px; }
+
+  .container { max-width: 900px; margin: 0 auto; padding: 32px 16px 80px; }
+
+  .section { margin-bottom: 44px; }
+  .section-title {
+    font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+    color: #c8a96e; border-bottom: 1px solid #d5cfc5;
+    padding-bottom: 8px; margin-bottom: 20px;
+  }
+  h2 { font-size: 22px; font-weight: normal; margin-bottom: 14px; color: #1a3a2a; }
+
+  .card {
+    background: white;
+    border-radius: 4px;
+    padding: 24px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    margin-bottom: 14px;
+  }
+  .card h3 { font-size: 16px; color: #1a3a2a; margin-bottom: 10px; }
+  .card p { font-size: 14px; line-height: 1.7; color: #444; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead th { background: #1a3a2a; color: #c8a96e; text-align: left; padding: 10px 12px; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; }
+  tbody tr:nth-child(even) { background: #f9f7f4; }
+  tbody td { padding: 9px 12px; border-bottom: 1px solid #ece9e3; vertical-align: top; }
+  tbody tr.subtotal td { background: #edf5ef; font-weight: bold; }
+  tbody tr.total td { background: #1a3a2a; color: white; font-weight: bold; font-size: 14px; }
+  tbody tr.total2 td { background: #2d5c42; color: white; font-weight: bold; font-size: 14px; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 600px) { .two-col { grid-template-columns: 1fr; } }
+
+  .highlight-box {
+    background: #1a3a2a;
+    color: white;
+    border-radius: 4px;
+    padding: 24px;
+    margin-bottom: 14px;
+  }
+  .highlight-box h3 { color: #c8a96e; margin-bottom: 10px; font-size: 17px; }
+  .highlight-box .big-num { font-size: 38px; font-weight: bold; color: white; line-height: 1; }
+  .highlight-box .label { font-size: 11px; color: #aac7b5; margin-top: 4px; letter-spacing: 1px; text-transform: uppercase; }
+  .highlight-box p { font-size: 13px; color: #c5dbd0; margin-top: 10px; line-height: 1.6; }
+
+  .tag { display: inline-block; font-size: 11px; padding: 3px 10px; border-radius: 20px; font-weight: bold; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .tag.green { background: #d4edda; color: #1a5c2a; }
+  .tag.amber { background: #fff3cd; color: #856404; }
+
+  .verdict {
+    background: linear-gradient(135deg, #1a3a2a 0%, #2d5c42 100%);
+    color: white;
+    border-radius: 4px;
+    padding: 32px 24px;
+    margin-top: 44px;
+    border-left: 6px solid #c8a96e;
+  }
+  .verdict h2 { color: #c8a96e; font-size: 20px; margin-bottom: 14px; }
+  .verdict p { font-size: 14px; line-height: 1.8; color: #dceee5; }
+
+  .phase-num { display: inline-block; background: #c8a96e; color: white; width: 26px; height: 26px; border-radius: 50%; text-align: center; line-height: 26px; font-size: 12px; font-weight: bold; margin-right: 10px; flex-shrink: 0; }
+  .phase { display: flex; align-items: flex-start; margin-bottom: 12px; font-size: 14px; line-height: 1.6; }
+
+  .note { font-size: 12px; color: #888; font-style: italic; margin-top: 10px; }
+
+  .pro-con { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 12px; }
+  @media (max-width: 600px) { .pro-con { grid-template-columns: 1fr; } }
+  .pro-con .pro { background: #f0faf3; border-left: 3px solid #28a745; padding: 14px; border-radius: 3px; }
+  .pro-con .con { background: #fff8f0; border-left: 3px solid #fd7e14; padding: 14px; border-radius: 3px; }
+  .pro-con h4 { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+  .pro-con ul { list-style: none; font-size: 13px; line-height: 1.8; }
+  .pro-con ul li::before { content: '• '; }
+
+  .warn-row td { background: #fff8e8 !important; font-size: 12px; color: #856404; }
+
+  footer { text-align: center; font-size: 11px; color: #aaa; padding: 24px; border-top: 1px solid #ddd; margin-top: 60px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="address">Property Investment Report · April 2026</div>
+  <h1>17 North 5th Avenue<br>Long Branch, NJ 07740</h1>
+  <div class="subtitle">Lower Unit Renovation &amp; Rental Strategy — Prepared for Internal Review</div>
+  <div class="meta">
+    <div class="meta-item">Property Type <span>2-Family</span></div>
+    <div class="meta-item">Lot <span>0.17 AC / 7,405 SF</span></div>
+    <div class="meta-item">Scope <span>Lower Unit Only</span></div>
+    <div class="meta-item">Unit <span>3 BD / 2 BA + Basement</span></div>
+    <div class="meta-item">Year Built <span>1910</span></div>
+    <div class="meta-item">Location <span>N. Long Branch</span></div>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- PROPERTY OVERVIEW -->
+  <div class="section">
+    <div class="section-title">Property Overview</div>
+    <div class="card">
+      <h3>About the Property</h3>
+      <p>17 N 5th Avenue is a legal two-family home in North Long Branch, approximately one mile from the beach. <strong>This report covers the lower unit only.</strong> The lower unit features 3 bedrooms and 1 bathroom on the main floor, an open living room, dine-in kitchen, plus a finished basement with a second bathroom — effectively a 3 BD / 2 BA layout with bonus living space.</p>
+      <p style="margin-top:10px;">The property previously rented at $3,100/month combined. The finished basement adds meaningful appeal — usable as a 4th sleeping area, game room, or den for summer guests, which directly supports premium seasonal pricing.</p>
+      <p class="note">Data sourced from MLS #22108417 / Monmouth County records. Tax ID: 27-00270-0000-00012. Lot: 7,405 SF.</p>
+    </div>
+  </div>
+
+  <!-- RENOVATION PLAN -->
+  <div class="section">
+    <div class="section-title">Renovation &amp; Improvement Plan</div>
+    <h2>Phase-by-Phase Action Plan</h2>
+    <div class="card">
+      <div class="phase"><span class="phase-num">1</span><div><strong>Electrical Inspection &amp; Code Compliance</strong> — Licensed NJ electrician inspects full property, repairs any code violations, updates panel if needed. Pull permits through Long Branch Building Dept.</div></div>
+      <div class="phase"><span class="phase-num">2</span><div><strong>Interior Repairs</strong> — Hardwood floor refinishing/repairs, wall patching and skim coat, baseboard replacement, door hardware and trim.</div></div>
+      <div class="phase"><span class="phase-num">3</span><div><strong>New Carpeting</strong> — Install in bedrooms (or LVP for premium feel). Refinish hardwood in living areas.</div></div>
+      <div class="phase"><span class="phase-num">4</span><div><strong>Full Interior Paint</strong> — All rooms, 2 coats. Neutral coastal palette: soft whites, warm grays, sage accents.</div></div>
+      <div class="phase"><span class="phase-num">5</span><div><strong>Deep Cleaning</strong> — Professional post-reno clean: windows, appliances, grout, fixtures.</div></div>
+      <div class="phase"><span class="phase-num">6</span><div><strong>Pool Removal &amp; Backyard Debris</strong> — Demo and remove old pool, haul all backyard trash, fill and grade.</div></div>
+      <div class="phase"><span class="phase-num">7</span><div><strong>Backyard Gravel Social Space + Fire Pit</strong> — Gravel entertaining area, fire pit, patio furniture. Low maintenance, high impact for summer guests.</div></div>
+      <div class="phase"><span class="phase-num">8</span><div><strong>Backyard Landscaping</strong> — Flowers, shrubs, mulch along edges.</div></div>
+      <div class="phase"><span class="phase-num">9</span><div><strong>Privacy Screening — Back Fence</strong> — Row of Emerald Green Arborvitae (spaced 3ft apart, grows 6–9" per year) for dense year-round screening. Optional: add Knockout Roses in front for color from the yard side.</div></div>
+      <div class="phase"><span class="phase-num">10</span><div><strong>Power Washing</strong> — Full exterior siding + entire PVC fence perimeter.</div></div>
+      <div class="phase"><span class="phase-num">11</span><div><strong>Front Yard Landscaping</strong> — Edge, mulch, seasonal flowers (impatiens, lavender, marigolds), trim shrubs, clean walkway.</div></div>
+      <div class="phase"><span class="phase-num">12</span><div><strong>Furnishing (Seasonal Option Only)</strong> — IKEA furnishings for living room, 3 bedrooms, kitchen/dining, basement bonus room, and patio. Shore aesthetic: clean, coastal, durable. <em>Skip entirely if going annual lease.</em></div></div>
+    </div>
+  </div>
+
+  <!-- COST TABLE -->
+  <div class="section">
+    <div class="section-title">Estimated Costs</div>
+    <h2>Renovation Budget — Lower Unit</h2>
+    <table>
+      <thead>
+        <tr><th>Category</th><th>Scope</th><th>Low</th><th>High</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Electrical Inspection &amp; Repairs</strong></td><td>Inspection, panel if needed, code updates, permits</td><td>$2,500</td><td>$6,000</td></tr>
+        <tr><td><strong>Hardwood Repair &amp; Refinishing</strong></td><td>Refinish existing HW, spot repairs</td><td>$1,500</td><td>$3,500</td></tr>
+        <tr><td><strong>Wall &amp; Baseboard Repairs</strong></td><td>Skim coat, patch, replace baseboards</td><td>$1,200</td><td>$3,000</td></tr>
+        <tr><td><strong>New Carpeting / Flooring</strong></td><td>Bedrooms, mid-grade carpet or LVP</td><td>$1,500</td><td>$3,500</td></tr>
+        <tr><td><strong>Interior Painting</strong></td><td>All rooms, 2 coats, ceilings &amp; trim</td><td>$2,500</td><td>$5,000</td></tr>
+        <tr><td><strong>Deep Cleaning</strong></td><td>Professional post-reno clean</td><td>$400</td><td>$800</td></tr>
+        <tr class="subtotal"><td colspan="2">Interior Subtotal</td><td>$9,600</td><td>$21,800</td></tr>
+        <tr><td><strong>Pool Removal</strong></td><td>Demo, haul, fill &amp; grade</td><td>$1,500</td><td>$5,000</td></tr>
+        <tr><td><strong>Backyard Debris Removal</strong></td><td>Dumpster + haul all backyard trash</td><td>$500</td><td>$1,500</td></tr>
+        <tr><td><strong>Gravel Area + Fire Pit</strong></td><td>Gravel, edging, fire pit, patio furniture</td><td>$2,000</td><td>$4,500</td></tr>
+        <tr><td><strong>Backyard Landscaping</strong></td><td>Flowers, shrubs, mulch</td><td>$600</td><td>$1,800</td></tr>
+        <tr><td><strong>Evergreen Privacy Screen</strong></td><td>~20 Arborvitae, 5–6ft, installed along back fence</td><td>$2,000</td><td>$4,000</td></tr>
+        <tr><td><strong>Power Washing</strong></td><td>Exterior siding + full PVC fence perimeter</td><td>$400</td><td>$900</td></tr>
+        <tr><td><strong>Front Yard Landscaping</strong></td><td>Edge, mulch, flowers, trim, walkway</td><td>$500</td><td>$1,200</td></tr>
+        <tr class="subtotal"><td colspan="2">Exterior Subtotal</td><td>$7,500</td><td>$18,900</td></tr>
+        <tr class="warn-row"><td colspan="4">⚠️ Furnishings below apply to <strong>Seasonal Option only</strong>. Annual lease = $0 furnishing cost.</td></tr>
+        <tr><td><strong>Living Room</strong></td><td>Sofa, chairs, coffee table, TV stand, rug, lamps (IKEA)</td><td>$1,200</td><td>$2,500</td></tr>
+        <tr><td><strong>Bedrooms ×3</strong></td><td>Bed frames, mattresses, dressers, nightstands, bedding (IKEA)</td><td>$2,500</td><td>$5,000</td></tr>
+        <tr><td><strong>Kitchen / Dining</strong></td><td>Dining table + chairs, small appliances, cookware, dishes</td><td>$800</td><td>$1,800</td></tr>
+        <tr><td><strong>Basement Bonus Room</strong></td><td>Sofa bed or futon, TV, small table</td><td>$400</td><td>$900</td></tr>
+        <tr><td><strong>Patio</strong></td><td>Outdoor dining set, lounge chairs, umbrella</td><td>$600</td><td>$1,500</td></tr>
+        <tr class="subtotal"><td colspan="2">Furnishings Subtotal (Seasonal only)</td><td>$5,500</td><td>$11,700</td></tr>
+        <tr><td><strong>Contingency (10%)</strong></td><td>Unexpected repairs, permit fees, overruns</td><td>$2,260</td><td>$5,240</td></tr>
+        <tr class="total"><td colspan="2">TOTAL — Seasonal Option (with furnishings)</td><td>$24,860</td><td>$57,640</td></tr>
+        <tr class="total2"><td colspan="2">TOTAL — Annual Option (no furnishings)</td><td>$19,360</td><td>$45,940</td></tr>
+      </tbody>
+    </table>
+    <p class="note">Mid-point planning figures: <strong>~$41K seasonal</strong> / <strong>~$33K annual</strong>. Electrical and pool removal vary most based on what inspection reveals.</p>
+  </div>
+
+  <!-- RENTAL STRATEGY -->
+  <div class="section">
+    <div class="section-title">Rental Strategy Analysis</div>
+    <h2>Option A vs. Option B</h2>
+    <div class="two-col">
+      <div class="highlight-box">
+        <span class="tag amber" style="background:#c8a96e22;color:#c8a96e;">OPTION A — SEASONAL</span>
+        <h3>Summer + Off-Season</h3>
+        <div class="big-num">~$40K</div>
+        <div class="label">Estimated Net / Year</div>
+        <p>Summer (June–Aug) at $10–12K/month. Off-season (Sept–May) at $2,000–2,500/month. Unit furnished for guests.</p>
+      </div>
+      <div class="highlight-box" style="background:#2d4a3a;">
+        <span class="tag green" style="background:#28a74522;color:#a0e0b0;">OPTION B — ANNUAL</span>
+        <h3>Year-Round Fixed Lease</h3>
+        <div class="big-num">~$34K</div>
+        <div class="label">Estimated Net / Year</div>
+        <p>12-month lease at $3,000–3,500/month. Unfurnished. No seasonal management overhead.</p>
+      </div>
+    </div>
+
+    <table style="margin-top:16px;">
+      <thead>
+        <tr><th>Revenue Stream</th><th>Layout</th><th>Rate</th><th>Months</th><th>Revenue</th></tr>
+      </thead>
+      <tbody>
+        <tr><td colspan="5" style="background:#f0f7f2;font-weight:bold;color:#1a5c2a;padding:8px 12px;">📅 OPTION A — Seasonal (Furnished)</td></tr>
+        <tr><td>Summer</td><td>3 BD / 2 BA + Basement</td><td>$10,000/mo</td><td>3</td><td>$30,000</td></tr>
+        <tr><td>Off-Season</td><td>3 BD / 2 BA + Basement</td><td>$2,200/mo</td><td>9</td><td>$19,800</td></tr>
+        <tr class="subtotal"><td colspan="4">Gross Revenue</td><td>$49,800</td></tr>
+        <tr><td colspan="4" style="font-size:12px;color:#888;">Less: Platform/mgmt fees (~15%), cleaning turnover, utilities</td><td style="color:#c0392b;">–$9,500</td></tr>
+        <tr class="total"><td colspan="4">Option A — Estimated Net / Year</td><td>~$40,300</td></tr>
+
+        <tr><td colspan="5" style="background:#f0f7f2;font-weight:bold;color:#1a5c2a;padding:8px 12px;">📋 OPTION B — Annual Lease (Unfurnished)</td></tr>
+        <tr><td>Annual Lease</td><td>3 BD / 2 BA + Basement</td><td>$3,200/mo</td><td>12</td><td>$38,400</td></tr>
+        <tr class="subtotal"><td colspan="4">Gross Revenue</td><td>$38,400</td></tr>
+        <tr><td colspan="4" style="font-size:12px;color:#888;">Less: Mgmt fee (~8%), maintenance reserve</td><td style="color:#c0392b;">–$4,000</td></tr>
+        <tr class="total2"><td colspan="4">Option B — Estimated Net / Year</td><td>~$34,400</td></tr>
+      </tbody>
+    </table>
+    <p class="note">Option A at $12K/mo summer = ~$47K net. Option B at $3,500/mo = ~$38,400 gross. Upper unit revenue not included in either scenario.</p>
+  </div>
+
+  <!-- PROS & CONS -->
+  <div class="section">
+    <div class="section-title">Strategy Comparison</div>
+    <h2>Pros &amp; Cons</h2>
+    <div class="card" style="margin-bottom:16px;">
+      <span class="tag amber">OPTION A — Seasonal</span>
+      <div class="pro-con">
+        <div class="pro">
+          <h4>✅ Pros</h4>
+          <ul>
+            <li>~$6K more net annually vs Option B</li>
+            <li>1 mile to beach — strong NJ Shore demand</li>
+            <li>Finished basement = bonus sleeping area</li>
+            <li>Fire pit / outdoor space supports premium pricing</li>
+            <li>Monmouth University off-season tenant pool</li>
+          </ul>
+        </div>
+        <div class="con">
+          <h4>⚠️ Cons</h4>
+          <ul>
+            <li>$5–12K IKEA furnishing cost upfront</li>
+            <li>Higher mgmt burden (cleaning, turnover)</li>
+            <li>Vacancy risk if not listed early</li>
+            <li>More wear from short-term guests</li>
+            <li>Long Branch STR permit required — verify</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <span class="tag green">OPTION B — Annual</span>
+      <div class="pro-con">
+        <div class="pro">
+          <h4>✅ Pros</h4>
+          <ul>
+            <li>Stable, predictable monthly income</li>
+            <li>Zero furnishing cost</li>
+            <li>Low management overhead</li>
+            <li>No STR permit concerns</li>
+            <li>Lower reno budget (~$33K vs ~$41K)</li>
+          </ul>
+        </div>
+        <div class="con">
+          <h4>⚠️ Cons</h4>
+          <ul>
+            <li>~$6K less net per year vs seasonal</li>
+            <li>Locked in even if rental market rises</li>
+            <li>Tenant issues = longer resolution</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LANDSCAPING NOTE -->
+  <div class="section">
+    <div class="section-title">Landscaping Note</div>
+    <div class="card">
+      <h3>🌲 Back Fence Privacy Screening</h3>
+      <p><strong>Recommended:</strong> Two-layer approach for faster, denser results:</p>
+      <p style="margin-top:8px;"><strong>Layer 1 (Fast screen, 1–2 seasons):</strong> Emerald Green Arborvitae every 3 feet along back fence. Grows 6–9 inches/year, dense year-round, cold-hardy. ~$50–100/tree installed.</p>
+      <p style="margin-top:8px;"><strong>Layer 2 (Optional bonus):</strong> Knockout Roses or ornamental grasses in front of evergreens — adds color from the yard side and makes the space feel more like a resort garden than a backyard fence line. Directly supports summer rental appeal and pricing.</p>
+    </div>
+  </div>
+
+  <!-- ROI TABLE -->
+  <div class="section">
+    <div class="section-title">Return on Investment</div>
+    <h2>Payback Timeline</h2>
+    <table>
+      <thead>
+        <tr><th>Scenario</th><th>Reno Investment</th><th>Net Annual Revenue</th><th>Payback Period</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Option A — Seasonal ($10K summer, furnished)</td><td>~$41,000</td><td>~$40,300</td><td><strong>~12 months</strong></td></tr>
+        <tr><td>Option A — Seasonal ($12K summer, furnished)</td><td>~$41,000</td><td>~$47,000</td><td><strong>~10 months</strong></td></tr>
+        <tr><td>Option B — Annual ($3,200/mo, unfurnished)</td><td>~$33,000</td><td>~$34,400</td><td><strong>~12 months</strong></td></tr>
+      </tbody>
+    </table>
+    <p class="note">Payback = time for net rental revenue to cover reno investment. Excludes mortgage, taxes, insurance. Lower unit only. Estimates pending contractor quotes.</p>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="verdict">
+    <h2>📋 Recommendation</h2>
+    <p>Both options pay back the renovation in roughly 12 months — so this is less a financial decision and more an <strong>operational preference</strong>. Seasonal earns ~$6K more per year but requires management (listings, cleaning, turnover). Annual is set-it-and-forget-it at a nearly identical payback timeline, with lower upfront cost since there's no furnishing.</p>
+    <p style="margin-top:12px;">If you have the bandwidth or a local property manager, <strong>seasonal is the better play</strong> — the finished basement and outdoor entertaining space give this unit a real competitive edge for groups willing to pay $10–12K for the summer. List it now and you can catch summer 2026.</p>
+    <p style="margin-top:12px;"><strong>Key next steps:</strong> (1) Verify Long Branch STR permit requirements before committing to seasonal. (2) Get 2–3 contractor quotes immediately — target completion by late May. (3) If seasonal, list on Airbnb, VRBO, and Shore House NJ ASAP — summer books early. (4) IKEA Edison is 45 min away for an efficient furnishing run.</p>
+    <p style="margin-top:12px;">Target launch: <strong>June 1, 2026</strong>.</p>
+  </div>
+
+</div>
+
+<footer>
+  17 N 5th Avenue, Long Branch, NJ 07740 &nbsp;·&nbsp; Property Report &nbsp;·&nbsp; April 2026 &nbsp;·&nbsp; Internal Use Only
+</footer>
+
+</body>
+</html>
